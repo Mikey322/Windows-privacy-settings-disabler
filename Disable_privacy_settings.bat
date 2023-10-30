@@ -29,17 +29,17 @@ if '%errorlevel%' NEQ '0' (
 REM Go to system32 dir
 cd %systemroot%\system32
 
-set /p MicAccess=Disable access to microphone? (Y/N): 
+set /p MicAccess=Disable let apps access your microphone? (Y/N): 
 if /I %MicAccess% EQU y (Reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\microphone" /v "Value" /t REG_SZ /d "Deny" /f)
 
 echo.
 
-set /p CamAccess=Disable access to camera? (Y/N): 
+set /p CamAccess=Disable let apps access your camera? (Y/N): 
 if /I %CamAccess% EQU y (Reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\webcam" /v "Value" /t REG_SZ /d "Deny" /f)
 
 echo.
 
-set /p RadioAccess=Disable access to radios? (Y/N): 
+set /p RadioAccess=Disable radio control access? (Y/N): 
 if /I %RadioAccess% EQU y (Reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\radios" /v "Value" /t REG_SZ /d "Deny" /f)
 
 echo.
@@ -78,6 +78,11 @@ echo.
 
 echo Website access language list
 Reg.exe add "HKCU\Control Panel\International\User Profile" /v "HttpAcceptLanguageOptOut" /t REG_DWORD /d "1" /f
+
+echo.
+
+echo App launch tracking
+Reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "Start_TrackProgs" /t REG_DWORD /d "0" /f
 
 echo.
 
@@ -254,6 +259,13 @@ echo.
 
 echo File system access
 Reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\broadFileSystemAccess" /v "Value" /t REG_SZ /d "Deny" /f
+
+echo.
+echo.
+echo.
+
+set /p RestartPC=Please restart computer (Y/N): 
+if /I %RestartPC% EQU y (shutdown -r -t 0)
 
 echo.
 
